@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Phone Marketplace
+
+A mobile-first e-commerce platform for buying and selling phones, built with Next.js 15, TypeScript, and SQLite.
+
+## Features
+
+- **User Roles**: Buyers, Sellers, and Admins
+- **Authentication**: Secure login and registration with NextAuth.js
+- **Product Management**: Sellers can list and manage their phone listings
+- **Shopping Cart**: Add products to cart and manage quantities
+- **Image Upload**: Support for multiple product images via Cloudinary
+- **Admin Dashboard**: Admin panel for managing users and products
+- **Mobile-First Design**: Clean, Apple-inspired UI optimized for mobile devices
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+2. **Set up environment variables**:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Edit `.env.local` and add your credentials:
+   - `NEXTAUTH_URL=http://localhost:3000`
+   - `NEXTAUTH_SECRET=your-secret-key`
+   - Cloudinary credentials (optional for image uploads)
+
+3. **Run database migrations**:
+   ```bash
+   npm run db:migrate
+   ```
+
+4. **Create an admin user** (optional):
+   ```bash
+   npx tsx scripts/create-admin.ts
+   ```
+   This creates an admin user with:
+   - Email: admin@example.com
+   - Password: admin123
+
+5. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+```
+app/
+├── (auth)/           # Authentication pages
+├── admin/           # Admin dashboard
+├── api/             # API routes
+├── auth/            # Auth pages
+├── cart/            # Shopping cart
+├── dashboard/       # Seller dashboard
+├── products/        # Product listings and details
+└── page.tsx         # Home page
+components/         # Reusable components
+lib/               # Utilities and configurations
+scripts/           # Helper scripts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### For Buyers
+- Browse and search for phones
+- View detailed product information
+- Add products to cart
+- Manage cart quantities
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### For Sellers
+- Register as a seller
+- Create product listings with multiple images
+- Manage inventory and product status
+- View their products in a dedicated dashboard
 
-## Learn More
+### For Admins
+- View platform statistics
+- Manage users and roles
+- Monitor products and orders
+- Access admin dashboard
 
-To learn more about Next.js, take a look at the following resources:
+## Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The project uses SQLite with Drizzle ORM. The database includes tables for:
+- Users (with roles: buyer, seller, admin)
+- Products (with images, pricing, inventory)
+- Orders and order items
+- Shopping cart items
+- Authentication sessions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To view the database:
+```bash
+npm run db:studio
+```
 
-## Deploy on Vercel
+## Image Upload
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Products can have multiple images uploaded to Cloudinary. To enable image uploads:
+1. Create a Cloudinary account
+2. Set up an upload preset named `phone_marketplace`
+3. Add your Cloudinary credentials to `.env.local`:
+   ```
+   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloud-name
+   NEXT_PUBLIC_CLOUDINARY_API_KEY=your-api-key
+   CLOUDINARY_API_SECRET=your-api-secret
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+The application can be deployed to any platform that supports Next.js. Make sure to:
+1. Set all environment variables in production
+2. Run `npm run build` before deploying
+3. Use a production database (not SQLite for large-scale deployments)
+
+## Technologies Used
+
+- Next.js 15 with App Router
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Drizzle ORM
+- SQLite
+- NextAuth.js
+- Cloudinary (for images)
+- Lucide React (icons)
