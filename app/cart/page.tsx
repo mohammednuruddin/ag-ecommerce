@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/components/navbar';
 import { Button } from '@/components/ui/button';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface CartItem {
   id: string;
@@ -90,11 +91,34 @@ export default function CartPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="text-center">Loading...</div>
-        </div>
+      <div className="py-8">
+        <main className="max-w-7xl mx-auto">
+          <Skeleton className="h-8 w-48 mb-8" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="bg-card rounded-lg border p-6">
+                  <div className="flex items-center gap-4">
+                    <Skeleton className="w-20 h-20 rounded-lg" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-4 w-2/3" />
+                      <Skeleton className="h-4 w-1/3" />
+                    </div>
+                    <Skeleton className="h-8 w-24" />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="lg:col-span-1">
+              <div className="bg-card rounded-lg border p-6">
+                <Skeleton className="h-6 w-40 mb-4" />
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-4 w-3/4 mb-2" />
+                <Skeleton className="h-10 w-full mt-4" />
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
@@ -104,10 +128,8 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
-      <main className="max-w-7xl mx-auto px-4 py-8">
+    <div className="py-8">
+      <main className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
 
         {cartItems.length === 0 ? (
@@ -123,12 +145,14 @@ export default function CartPage() {
               {cartItems.map((item) => (
                 <div key={item.id} className="bg-white rounded-lg shadow-sm p-6">
                   <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="w-20 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 relative">
                       {item.product.images.length > 0 ? (
-                        <img
+                        <Image
                           src={item.product.images[0]}
                           alt={item.product.name}
-                          className="w-full h-full object-cover"
+                          fill
+                          sizes="80px"
+                          className="object-cover"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">

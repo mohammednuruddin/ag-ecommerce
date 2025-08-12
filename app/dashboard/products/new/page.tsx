@@ -67,13 +67,21 @@ export default function NewProductPage() {
     setLoading(true);
 
     try {
-      const imageUrls = [];
+      const imageUrls: string[] = [];
       
       if (process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME) {
         for (const image of formData.images) {
           const uploadFormData = new FormData();
           uploadFormData.append('file', image);
-          uploadFormData.append('upload_preset', 'phone_marketplace');
+          uploadFormData.append(
+            'upload_preset',
+            process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'phone_marketplace'
+          );
+          // Ensure files go into a folder (Cloudinary will create it if missing)
+          uploadFormData.append(
+            'folder',
+            process.env.NEXT_PUBLIC_CLOUDINARY_FOLDER || 'phone-marketplace'
+          );
 
           const response = await fetch(
             `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -84,7 +92,11 @@ export default function NewProductPage() {
           );
 
           const data = await response.json();
-          imageUrls.push(data.secure_url);
+          if (!response.ok || !data?.secure_url) {
+            const message = (data?.error && (data.error.message || JSON.stringify(data.error))) || 'Upload failed';
+            throw new Error(message);
+          }
+          imageUrls.push(data.secure_url as string);
         }
       } else {
         alert('Cloudinary is not configured. Please set up Cloudinary to upload images.');

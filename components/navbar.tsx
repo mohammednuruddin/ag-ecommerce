@@ -4,20 +4,24 @@ import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart, User, Package } from 'lucide-react';
+import { MiniCart } from '@/components/minicart';
+import MobileNav from '@/components/mobile-nav';
 
 export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="container flex h-16 items-center justify-between px-4">
-        <div className="flex items-center">
-          <Link href="/" className="text-xl font-bold text-primary">
+        <div className="flex items-center min-w-0">
+          <Link href="/" className="text-[17px] font-semibold tracking-[-0.01em] text-foreground">
             PhoneMarket
           </Link>
         </div>
-        
-        <div className="flex items-center space-x-4">
+
+        {/* Desktop actions */}
+        <div className="hidden md:flex items-center gap-2">
+          <MiniCart />
           {session ? (
             <>
               {(session.user.role === 'seller' || session.user.role === 'admin') && (
@@ -31,19 +35,16 @@ export default function Navbar() {
                   </Link>
                 </Button>
               )}
-              
               <Button variant="ghost" asChild>
                 <Link href="/cart" className="flex items-center space-x-2">
                   <ShoppingCart className="h-4 w-4" />
                   <span>Cart</span>
                 </Link>
               </Button>
-              
               <div className="flex items-center space-x-2">
                 <User className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm font-medium">{session.user.name}</span>
+                <span className="text-sm font-medium truncate max-w-[160px]">{session.user.name}</span>
               </div>
-              
               <Button variant="ghost" onClick={() => signOut()}>
                 Sign out
               </Button>
@@ -58,6 +59,12 @@ export default function Navbar() {
               </Button>
             </div>
           )}
+        </div>
+
+        {/* Mobile actions */}
+        <div className="flex items-center gap-1 md:hidden">
+          <MiniCart />
+          <MobileNav />
         </div>
       </div>
     </nav>

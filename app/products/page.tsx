@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import Navbar from '@/components/navbar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Product {
   id: string;
@@ -42,24 +43,35 @@ export default function ProductsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">Loading...</div>
-        </div>
+      <div className="py-8">
+        <main>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-3 sm:gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">All Phones</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">Browse our collection of quality devices</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div key={i} className="space-y-2">
+                <Skeleton className="w-full aspect-square rounded-xl" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+              </div>
+            ))}
+          </div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+    <div className="py-8">
+      <main>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-3 sm:gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">All Phones</h1>
-            <p className="text-muted-foreground">Browse our collection of quality devices</p>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">All Phones</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">Browse our collection of quality devices</p>
           </div>
         </div>
 
@@ -71,43 +83,46 @@ export default function ProductsPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
             {products.map((product) => (
-              <Card key={product.id} className="group overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="aspect-square relative overflow-hidden bg-muted">
+              <Card key={product.id} className="group overflow-hidden p-0">
+                <div className="aspect-[4/5] relative overflow-hidden bg-muted">
                   {product.images.length > 0 ? (
-                    <img 
-                      src={product.images[0]} 
+                    <Image
+                      src={product.images[0]}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <span className="text-muted-foreground">No image</span>
                     </div>
                   )}
+                  <div className="absolute left-3 top-3 flex gap-2">
+                    <Badge variant="secondary" className="bg-white/80 backdrop-blur text-foreground">{product.brand}</Badge>
+                  </div>
                   {product.stock === 0 && (
-                    <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
-                      <Badge variant="secondary" className="text-white bg-black/50">
-                        Out of Stock
-                      </Badge>
+                    <div className="absolute right-3 top-3">
+                      <Badge variant="secondary" className="bg-black text-white">Out</Badge>
                     </div>
                   )}
                 </div>
-                <CardContent className="p-3">
-                  <div className="space-y-1">
-                    <h3 className="font-semibold text-sm line-clamp-1">{product.name}</h3>
-                    <p className="text-xs text-muted-foreground line-clamp-1">{product.brand} {product.model}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold">${product.price}</span>
-                      <Badge variant="outline" className="capitalize text-xs">
-                        {product.condition.replace('_', ' ')}
-                      </Badge>
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h3 className="font-semibold line-clamp-1">{product.name}</h3>
+                      <p className="text-xs text-muted-foreground line-clamp-1">{product.model}</p>
                     </div>
-                    <Link href={`/products/${product.id}`} className="block">
-                      <Button size="sm" className="w-full text-xs" disabled={product.stock === 0}>
-                        View
-                      </Button>
+                    <Badge variant="outline" className="capitalize text-xs whitespace-nowrap">
+                      {product.condition.replace('_', ' ')}
+                    </Badge>
+                  </div>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-xl font-bold">${product.price}</span>
+                    <Link href={`/products/${product.id}`}>
+                      <Button size="sm" disabled={product.stock === 0}>View</Button>
                     </Link>
                   </div>
                 </CardContent>

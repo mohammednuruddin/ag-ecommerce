@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/providers";
+import Navbar from "@/components/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +26,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`antialiased`}>
         <Providers>
-          {children}
+          <Navbar />
+          <main className="container px-3 sm:px-4">
+            {children}
+          </main>
+          <footer className="border-t mt-16">
+            <div className="container px-3 sm:px-4 py-8 text-sm text-muted-foreground flex flex-col sm:flex-row gap-3 sm:gap-0 sm:justify-between sm:items-center">
+              <span className="order-2 sm:order-1">© {new Date().getFullYear()} PhoneMarket</span>
+              <div className="order-1 sm:order-2 flex gap-4">
+                <a href="/products" className="hover:underline">Browse</a>
+                <a href="/auth/signup?role=seller" className="hover:underline">Sell</a>
+              </div>
+            </div>
+          </footer>
         </Providers>
       </body>
     </html>

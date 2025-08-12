@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import Navbar from '@/components/navbar';
 import { Plus, Package, Edit, Trash2 } from 'lucide-react';
 
 interface Product {
@@ -84,11 +83,8 @@ export default function Dashboard() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="text-center">Loading...</div>
-        </div>
+      <div className="min-h-[60vh] grid place-items-center">
+        <div className="text-center">Loading...</div>
       </div>
     );
   }
@@ -98,10 +94,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
-      <main className="max-w-7xl mx-auto px-4 py-8">
+    <div className="py-8">
+      <main className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">My Products</h1>
           <Link href="/dashboard/products/new">
