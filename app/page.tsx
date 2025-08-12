@@ -27,12 +27,9 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (session?.user?.role === 'buyer') {
-      fetchProducts();
-    } else {
-      setLoading(false);
-    }
-  }, [session]);
+    // Always show products on the landing page
+    fetchProducts();
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -50,6 +47,88 @@ export default function Home() {
 
   return (
     <>
+      {/* Products first */}
+      <section className="py-8 sm:py-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+            <h2 className="text-2xl sm:text-3xl font-bold">Latest Phones</h2>
+            <div className="flex items-center gap-2">
+              {session?.user?.role === 'seller' && (
+                <Link href="/dashboard/products/new">
+                  <Button size="sm">Add Product</Button>
+                </Link>
+              )}
+              <Link href="/products">
+                <Button variant="outline" size="sm">View All</Button>
+              </Link>
+            </div>
+          </div>
+          {loading ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="space-y-2">
+                  <Skeleton className="w-full aspect-square rounded-xl" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-3 w-1/2" />
+                </div>
+              ))}
+            </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No phones available yet.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {products.map((product) => (
+                <Card key={product.id} className="group overflow-hidden p-0">
+                  <div className="aspect-[4/5] relative overflow-hidden bg-muted">
+                    {product.images.length > 0 ? (
+                      <Image
+                        src={product.images[0]}
+                        alt={product.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-muted-foreground">No image</span>
+                      </div>
+                    )}
+                    <div className="absolute left-3 top-3 flex gap-2">
+                      <Badge variant="secondary" className="bg-white/80 backdrop-blur text-foreground">{product.brand}</Badge>
+                    </div>
+                    {product.stock === 0 && (
+                      <div className="absolute right-3 top-3">
+                        <Badge variant="secondary" className="bg-black text-white">Out</Badge>
+                      </div>
+                    )}
+                  </div>
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <h3 className="font-semibold line-clamp-1">{product.name}</h3>
+                        <p className="text-xs text-muted-foreground line-clamp-1">{product.model}</p>
+                      </div>
+                      <Badge variant="outline" className="capitalize text-xs whitespace-nowrap">
+                        {product.condition.replace('_', ' ')}
+                      </Badge>
+                    </div>
+                    <div className="mt-3 flex items-center justify-between">
+                      <span className="text-xl font-bold">${product.price}</span>
+                      <Link href={`/products/${product.id}`}>
+                        <Button size="sm" disabled={product.stock === 0}>View</Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Hero secondary */}
       <section className="relative py-14 sm:py-16 md:py-20">
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary/10 via-transparent to-transparent" />
         <div className="absolute inset-0 -z-10 [mask-image:radial-gradient(70%_60%_at_50%_20%,black,transparent)] bg-[linear-gradient(to_right,transparent_95%,theme(colors.border)),linear-gradient(to_bottom,transparent_95%,theme(colors.border))] bg-[size:22px_22px]" />

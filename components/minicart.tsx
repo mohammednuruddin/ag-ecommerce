@@ -45,17 +45,19 @@ export function MiniCart() {
 
   return (
     <>
-      <Button variant="ghost" size="icon" onClick={() => setOpen(true)} aria-label="Open cart">
+      {/* <Button variant="ghost" size="icon" onClick={() => setOpen(true)} aria-label="Open cart">
         <ShoppingCart className="h-4 w-4" />
-      </Button>
+      </Button> */}
       {open && (
-        <div className="fixed inset-0 z-[60]">
+        <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true">
           <div
             className="absolute inset-0 bg-black/30 backdrop-blur-[2px] transition-opacity"
             onClick={() => setOpen(false)}
           />
           <aside
             className="absolute right-0 top-0 h-full w-full max-w-md bg-white/70 supports-[backdrop-filter]:bg-white/60 backdrop-blur-xl border-l border-border/60 shadow-lg flex flex-col rounded-l-2xl overflow-hidden animate-in slide-in-from-right duration-200"
+            tabIndex={-1}
+            onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false) }}
           >
             <div className="flex items-center justify-between px-5 py-4 border-b">
               <div className="text-[17px] font-semibold tracking-[-0.01em]">Your Cart</div>

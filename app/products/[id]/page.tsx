@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from 'sonner';
 
 interface Product {
   id: string;
@@ -72,9 +73,9 @@ export default function ProductDetailPage() {
       });
 
       if (response.ok) {
-        alert('Added to cart!');
+        toast.success('Added to cart');
       } else {
-        alert('Failed to add to cart');
+        toast.error('Failed to add to cart');
       }
     } catch (error) {
       console.error('Error adding to cart:', error);

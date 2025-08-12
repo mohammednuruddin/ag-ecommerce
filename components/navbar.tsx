@@ -6,21 +6,24 @@ import { Button } from '@/components/ui/button';
 import { ShoppingCart, User, Package } from 'lucide-react';
 import { MiniCart } from '@/components/minicart';
 import MobileNav from '@/components/mobile-nav';
+import SearchBar from '@/components/search-bar';
 
 export default function Navbar() {
   const { data: session } = useSession();
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <div className="container flex h-16 items-center justify-between px-4">
-        <div className="flex items-center min-w-0">
+      <div className="container flex h-16 items-center gap-3 px-4">
+        <div className="flex items-center min-w-0 shrink-0">
           <Link href="/" className="text-[17px] font-semibold tracking-[-0.01em] text-foreground">
             PhoneMarket
           </Link>
         </div>
-
+        <div className="hidden md:flex flex-1 min-w-0">
+          <SearchBar className="w-full" />
+        </div>
         {/* Desktop actions */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2 ml-auto">
           <MiniCart />
           {session ? (
             <>
@@ -62,10 +65,13 @@ export default function Navbar() {
         </div>
 
         {/* Mobile actions */}
-        <div className="flex items-center gap-1 md:hidden">
+        <div className="flex items-center gap-1 md:hidden ml-auto">
           <MiniCart />
           <MobileNav />
         </div>
+      </div>
+      <div className="md:hidden px-4 pb-3">
+        <SearchBar />
       </div>
     </nav>
   );

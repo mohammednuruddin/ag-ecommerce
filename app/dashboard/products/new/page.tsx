@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/navbar';
 import { Upload, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ProductFormData {
   name: string;
@@ -99,7 +100,7 @@ export default function NewProductPage() {
           imageUrls.push(data.secure_url as string);
         }
       } else {
-        alert('Cloudinary is not configured. Please set up Cloudinary to upload images.');
+        toast.error('Cloudinary is not configured. Please set up Cloudinary to upload images.');
         return;
       }
 
@@ -118,11 +119,11 @@ export default function NewProductPage() {
       if (productResponse.ok) {
         router.push('/dashboard');
       } else {
-        alert('Failed to create product');
+        toast.error('Failed to create product');
       }
     } catch (error) {
       console.error('Error creating product:', error);
-      alert('An error occurred');
+      toast.error('An error occurred');
     } finally {
       setLoading(false);
     }

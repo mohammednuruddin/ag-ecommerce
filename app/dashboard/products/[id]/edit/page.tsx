@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 type ProductPayload = {
   id: string
@@ -52,8 +53,8 @@ export default function EditProductPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(product),
       })
-      if (res.ok) router.push('/dashboard')
-      else alert('Failed to update product')
+      if (res.ok) { toast.success('Product updated'); router.push('/dashboard') }
+      else toast.error('Failed to update product')
     } finally {
       setSaving(false)
     }
