@@ -163,7 +163,7 @@ export default function CartPage() {
                     
                     <div className="flex-1">
                       <h3 className="font-semibold">{item.product.name}</h3>
-                      <p className="text-gray-600">${item.product.price}</p>
+                      <p className="text-gray-600">€{item.product.price}</p>
                     </div>
                     
                     <div className="flex items-center space-x-2">
@@ -188,7 +188,7 @@ export default function CartPage() {
                     
                     <div className="text-right">
                       <p className="font-semibold">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        €{(item.product.price * item.quantity).toFixed(2)}
                       </p>
                     </div>
                     
@@ -212,7 +212,7 @@ export default function CartPage() {
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>€{total.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
@@ -220,19 +220,21 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between">
                     <span>Tax</span>
-                    <span>${(total * 0.08).toFixed(2)}</span>
+                    <span>€{(total * 0.08).toFixed(2)}</span>
                   </div>
                   <div className="border-t pt-2">
                     <div className="flex justify-between font-semibold">
                       <span>Total</span>
-                      <span>${(total * 1.08).toFixed(2)}</span>
+                      <span>€{(total * 1.08).toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
                 
-                <Button className="w-full" size="lg">
-                  Proceed to Checkout
-                </Button>
+                <Link href="/checkout">
+                  <Button className="w-full" size="lg">
+                    Proceed to Checkout
+                  </Button>
+                </Link>
                 
                 <Link href="/products">
                   <Button variant="outline" className="w-full mt-2">

@@ -115,7 +115,7 @@ export default function Home() {
                       </Badge>
                     </div>
                     <div className="mt-3 flex items-center justify-between">
-                      <span className="text-xl font-bold">${product.price}</span>
+                      <span className="text-xl font-bold">€{product.price}</span>
                       <Link href={`/products/${product.id}`}>
                         <Button size="sm" disabled={product.stock === 0}>View</Button>
                       </Link>
@@ -218,7 +218,7 @@ export default function Home() {
                         </Badge>
                       </div>
                       <div className="mt-3 flex items-center justify-between">
-                        <span className="text-xl font-bold">${product.price}</span>
+                        <span className="text-xl font-bold">€{product.price}</span>
                         <Link href={`/products/${product.id}`}>
                           <Button size="sm" disabled={product.stock === 0}>View</Button>
                         </Link>

@@ -8,6 +8,20 @@
       "when": 1753912109072,
       "tag": "0000_even_namorita",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1755365763694,
+      "tag": "0001_glossy_slayback",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1755367953211,
+      "tag": "0002_high_supernaut",
+      "breakpoints": true
     }
   ]
 }

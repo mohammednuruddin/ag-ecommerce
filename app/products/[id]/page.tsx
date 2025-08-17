@@ -154,7 +154,7 @@ export default function ProductDetailPage() {
               <p className="text-gray-600 text-sm sm:text-base">{product.brand} {product.model}</p>
             </div>
             
-            <div className="text-2xl sm:text-3xl font-bold">${product.price}</div>
+            <div className="text-2xl sm:text-3xl font-bold">€{product.price}</div>
             
             <div className="space-y-2">
               <div className="flex items-center space-x-4">

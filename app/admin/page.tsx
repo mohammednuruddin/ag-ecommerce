@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Navbar from '@/components/navbar';
 import { Button } from '@/components/ui/button';
 import { Users, Package, ShoppingCart, TrendingUp } from 'lucide-react';
 
@@ -67,13 +66,10 @@ export default function AdminDashboard() {
     }
   };
 
-  if (status === 'loading' || loading) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="text-center">Loading...</div>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="text-center">Loading...</div>
       </div>
     );
   }
@@ -83,10 +79,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
-      <main className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -190,7 +183,6 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
-      </main>
     </div>
   );
 }
